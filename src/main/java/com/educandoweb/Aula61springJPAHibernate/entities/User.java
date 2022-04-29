@@ -3,11 +3,18 @@ package com.educandoweb.Aula61springJPAHibernate.entities;
 import java.io.Serializable;
 import java.util.Objects;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+@Entity
 public class User implements Serializable{  // permite que o objeto seja convertido em cadeia de bytes, e possa trafegar na rede
 
 	private static final long serialVersionUID = 1L;
 	
-	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY) // define que o id vai ser auto incrementado
 	private Long id;
 	private String name;
 	private String email;
