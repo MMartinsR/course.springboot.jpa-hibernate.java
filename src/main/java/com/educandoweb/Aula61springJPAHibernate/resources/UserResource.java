@@ -1,11 +1,16 @@
 package com.educandoweb.Aula61springJPAHibernate.resources;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.educandoweb.Aula61springJPAHibernate.entities.User;
+import com.educandoweb.Aula61springJPAHibernate.services.UserService;
 
 // Para dizermos que essa classe é um recurso web que é implementado por um controlador rest, 
 // usamos a anotação:
@@ -15,14 +20,27 @@ import com.educandoweb.Aula61springJPAHibernate.entities.User;
 @RequestMapping(value = "/users")
 public class UserResource {
 	
+	@Autowired
+	private UserService userService;
+	
 	// Vamos agora criar um endpoint para acessar os usuários
 	// Response entity, tipo especifico do spring que retorna respostas de requisições web.
 	// Além disso, para indicar que esse método responde a requisição do tipo get do http
 	// usamos o annotation:
 	@GetMapping
-	public ResponseEntity<User> findAll(){
-		User u = new User(1L, "Maria", "maria@gmail.com", "999999999", "12345");
-		return ResponseEntity.ok().body(u);
+	public ResponseEntity<List<User>> findAll(){
+
+		List<User> list = userService.findAll();
+		return ResponseEntity.ok().body(list);
 		// retorna uma resposta positiva no http e o corpo da resposta passando o objeto
+	}
+	
+	// Nesse método, o getmapping receberá o id que é para ser buscado.
+	// Além disso, para que a variavel id passada ao método seja aceito pela url, devemos 
+	//  usar a anotação @PathVariable
+	@GetMapping(value = "/{id}")
+	public ResponseEntity<User> findById(@PathVariable Long id){
+		User obj = userService.findById(id);
+		return ResponseEntity.ok().body(obj);
 	}
 }
