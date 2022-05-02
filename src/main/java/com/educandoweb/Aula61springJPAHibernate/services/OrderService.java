@@ -6,32 +6,32 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.educandoweb.Aula61springJPAHibernate.entities.User;
-import com.educandoweb.Aula61springJPAHibernate.repositories.UserRepository;
+import com.educandoweb.Aula61springJPAHibernate.entities.Order;
+import com.educandoweb.Aula61springJPAHibernate.repositories.OrderRepository;
 
 // Classe da camada de serviço, que será responsável por representar as regras de negócio
 // e ser o meio de campo entre o controlador e os repositórios.
 // Para que o framework spring possa fazer a injeção de dependência
-// para as nossas classes como a UserService - precisamos registrar esses componentes,
+// para as nossas classes como a OrderService - precisamos registrar esses componentes,
 // como componentes spring, através da anotação @Component. Pode ainda registrar de forma
 // mais especifica com as anotações @Service e @Repository:
 @Service
-public class UserService {
+public class OrderService {
 	
 	// anotação spring que faz a injeção de dependência automaticamente entre o
 	// repositório e o serviço.
 	@Autowired  
-	private UserRepository repository;
+	private OrderRepository repository;
 	
-	public List<User> findAll(){
+	public List<Order> findAll(){
 		return repository.findAll();
 	}
 	
-	public User findById(Long id) {
+	public Order findById(Long id) {
 		// o método findById retorna um objeto optional
-		Optional<User> obj = repository.findById(id);
+		Optional<Order> obj = repository.findById(id);
 		// o método get do optional retorna o objeto que está dentro do optional do tipo 
-		// que o Optional foi configurado para receber, no caso o User.
+		// que o Optional foi configurado para receber, no caso o Order.
 		return obj.get(); 
 	}
 	

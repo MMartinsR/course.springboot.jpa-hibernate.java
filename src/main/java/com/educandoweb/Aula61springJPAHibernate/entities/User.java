@@ -12,6 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "tb_user")
 public class User implements Serializable{  // permite que o objeto seja convertido em cadeia de bytes, e possa trafegar na rede
@@ -27,6 +29,9 @@ public class User implements Serializable{  // permite que o objeto seja convert
 	private String password;
 	
 	// UmParaMuitos associação, anotação e colocamos o nome do atributo do outro lado:
+	// JsonIgnore - anotação que permite interromper o loop derivado da associação de 
+	// mão dupla entre cliente e pedido
+	@JsonIgnore  
 	@OneToMany(mappedBy = "client")
 	private List<Order> orders = new ArrayList<>();
 	
