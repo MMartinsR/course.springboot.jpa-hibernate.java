@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 import com.educandoweb.Aula61springJPAHibernate.entities.pk.OrderItemPK;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 // Como essa classe tem uma chave primária composta, ela não entra no construtor diretamente.
 // O que acontece é que o construtor recebe objetos dos tipos que a compoem, no caso Order e 
@@ -16,9 +17,11 @@ import com.educandoweb.Aula61springJPAHibernate.entities.pk.OrderItemPK;
 @Table(name = "tb_order_item")
 public class OrderItem implements Serializable{
 	private static final long serialVersionUID = 1L;
-	
+
+	// Sempre que for criar um id composto, devemos instanciar esse objeto, senão 
+	// dará nullPointerException
 	@EmbeddedId
-	private OrderItemPK id;
+	private OrderItemPK id = new OrderItemPK();
 	
 	private Integer quantity;
 	private Double price;
@@ -33,6 +36,9 @@ public class OrderItem implements Serializable{
 		this.price = price;
 	}
 	
+	// Será necessário bloquear a relação de mão dupla aqui, no getOrder, pois para o JavaEE
+	// o que vale é o método GET, ou seja o endpoint chamado. Que no caso é o orders.
+	@JsonIgnore
 	public Order getOrder() {
 		return id.getOrder();
 	}
