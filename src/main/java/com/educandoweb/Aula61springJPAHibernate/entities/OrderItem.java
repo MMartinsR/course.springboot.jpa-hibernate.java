@@ -70,6 +70,12 @@ public class OrderItem implements Serializable{
 	public void setPrice(Double price) {
 		this.price = price;
 	}
+	
+	// Para que o jpa mapeie esse método, é necessário usar o padrão JavaEE, com o get antes
+	// do nome do método.
+	public Double getSubTotal() {
+		return price * quantity;
+	}
 
 	@Override
 	public int hashCode() {

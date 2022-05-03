@@ -109,8 +109,17 @@ public class Order implements Serializable {
 	public Set<OrderItem> getItems(){
 		return items;
 	}
-
-
+	
+	// Para que o jpa mapeie esse método, é necessário usar o padrão JavaEE, com o get antes
+	// do nome do método.
+	public Double getTotal() {
+		double sum = 0.0;
+		for (OrderItem oi : items) {
+			sum += oi.getSubTotal();
+		}
+		return sum;
+	}
+	
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);
