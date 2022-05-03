@@ -35,8 +35,9 @@ public class UserService {
 		return obj.get(); 
 	}
 	
-	
-	 
-	
+	// Este método save do repositorio padrao do jpa já retorna o objeto salvo.
+	public User insert(User obj) {
+		return repository.save(obj);
+	}
 
 }
