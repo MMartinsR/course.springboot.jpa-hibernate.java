@@ -4,10 +4,13 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.educandoweb.Aula61springJPAHibernate.entities.User;
 import com.educandoweb.Aula61springJPAHibernate.repositories.UserRepository;
+import com.educandoweb.Aula61springJPAHibernate.services.exceptions.DatabaseException;
 import com.educandoweb.Aula61springJPAHibernate.services.exceptions.ResourceNotFoundException;
 
 // Classe da camada de serviço, que será responsável por representar as regras de negócio
@@ -43,8 +46,17 @@ public class UserService {
 		return repository.save(obj);
 	}
 	
+	// Vamos capturar a exceção que o Java lança quando não consegue deletar pois o indice
+	// nao existe, e lançar a nossa exceção personalizada
 	public void delete(Long id) {
-		repository.deleteById(id);
+		try {
+			repository.deleteById(id);
+		} catch (EmptyResultDataAccessException e) {
+			throw new ResourceNotFoundException(id);
+		} catch (DataIntegrityViolationException e) {
+			throw new DatabaseException(e.getMessage());
+		}
+		
 	}
 	
 	// Apenas permite monitorar um dado, sem de fato busca lo do banco, é mais eficiente 
