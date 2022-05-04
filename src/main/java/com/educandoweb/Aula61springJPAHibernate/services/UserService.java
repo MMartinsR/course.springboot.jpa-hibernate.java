@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.educandoweb.Aula61springJPAHibernate.entities.User;
 import com.educandoweb.Aula61springJPAHibernate.repositories.UserRepository;
+import com.educandoweb.Aula61springJPAHibernate.services.exceptions.ResourceNotFoundException;
 
 // Classe da camada de serviço, que será responsável por representar as regras de negócio
 // e ser o meio de campo entre o controlador e os repositórios.
@@ -30,9 +31,11 @@ public class UserService {
 	public User findById(Long id) {
 		// o método findById retorna um objeto optional
 		Optional<User> obj = repository.findById(id);
-		// o método get do optional retorna o objeto que está dentro do optional do tipo 
+		// o método .get do optional retorna o objeto que está dentro do optional do tipo 
 		// que o Optional foi configurado para receber, no caso o User.
-		return obj.get(); 
+		// Agora usaremos o .orElseThrow, que se não tiver um objeto dentro dele, irá lançar
+		// uma exceção. Então usamos uma expressão lambda para instanciar uma nova exceção.
+		return obj.orElseThrow(() -> new ResourceNotFoundException(id)); 
 	}
 	
 	// Este método save do repositorio padrao do jpa já retorna o objeto salvo.
